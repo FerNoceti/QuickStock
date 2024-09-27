@@ -3,10 +3,7 @@ package dev.fer.quickstock.controller;
 import dev.fer.quickstock.dto.Product;
 import dev.fer.quickstock.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +30,11 @@ public class ProductController {
     @PostMapping("/product")
     public Product saveProduct(Product product) {
         return productService.saveProduct(product);
+    }
+
+    @PutMapping("/product/{id}")
+    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+        return productService.updateProduct(id, product);
     }
 
 }

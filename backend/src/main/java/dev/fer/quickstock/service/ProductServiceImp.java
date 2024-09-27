@@ -30,5 +30,15 @@ public class ProductServiceImp implements ProductService {
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
+
+    @Override
+    public Product updateProduct(Long id, Product product) {
+        Product productToUpdate = productRepository.findById(id).orElse(null);
+        if (productToUpdate != null) {
+            productToUpdate.setName(product.getName());
+            return productRepository.save(productToUpdate);
+        }
+        return null;
+    }
     
 }
