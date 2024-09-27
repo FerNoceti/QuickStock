@@ -36,6 +36,9 @@ public class ProductServiceImp implements ProductService {
         Product productToUpdate = productRepository.findById(id).orElse(null);
         if (productToUpdate != null) {
             productToUpdate.setName(product.getName());
+            productToUpdate.setDescription(product.getDescription());
+            productToUpdate.setPrice(product.getPrice());
+            productToUpdate.setStock(product.getStock());
             return productRepository.save(productToUpdate);
         }
         return null;

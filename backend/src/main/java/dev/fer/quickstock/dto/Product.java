@@ -48,7 +48,7 @@ public class Product {
         this.name = name;
     }
 
-    public String getDescription() { 
+    public String getDescription() {
         return description;
     }
 
