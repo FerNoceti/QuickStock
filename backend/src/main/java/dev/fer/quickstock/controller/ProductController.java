@@ -4,6 +4,7 @@ import dev.fer.quickstock.dto.Product;
 import dev.fer.quickstock.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,11 @@ public class ProductController {
     @GetMapping("/products")
     public List<Product> getProducts() {
         return productService.getProducts();
+    }
+
+    @GetMapping("/product/{id}")
+    public Product getProductById(@PathVariable("id") Long id) {
+        return productService.getProductById(id);
     }
 
     @PostMapping("/product")
