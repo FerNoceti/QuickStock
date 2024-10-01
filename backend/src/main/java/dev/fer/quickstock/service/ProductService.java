@@ -1,18 +1,19 @@
 package dev.fer.quickstock.service;
 
 import dev.fer.quickstock.dto.Product;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getProducts();
 
-    Product getProductById(Long id);
+    ResponseEntity<List<Product>> getProducts();
 
-    Product saveProduct(Product product);
+    ResponseEntity<Product> getProductById(Long id);
 
-    Product updateProduct(Long id, Product product);
+    ResponseEntity<Product> saveProduct(Product product);
 
-    boolean deleteProduct(Long id);
+    ResponseEntity<Product> updateProduct(Long id, Product product);
 
+    ResponseEntity<Void> deleteProduct(Long id);
 }

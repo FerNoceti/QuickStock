@@ -3,6 +3,7 @@ package dev.fer.quickstock.controller;
 import dev.fer.quickstock.dto.Product;
 import dev.fer.quickstock.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,27 +19,27 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<Product> getProducts() {
+    public ResponseEntity<List<Product>> getProducts() {
         return productService.getProducts();
     }
 
     @GetMapping("/product/{id}")
-    public Product getProductById(@PathVariable("id") Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
         return productService.getProductById(id);
     }
 
     @PostMapping("/product")
-    public Product saveProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
         return productService.saveProduct(product);
     }
 
     @PutMapping("/product/{id}")
-    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
         return productService.updateProduct(id, product);
     }
 
     @DeleteMapping("/product/{id}")
-    public boolean deleteProduct(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         return productService.deleteProduct(id);
     }
 
