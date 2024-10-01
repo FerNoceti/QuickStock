@@ -31,3 +31,13 @@ export const updateProduct = (id, product) => {
           throw err;
       });
 };
+
+export const deleteProduct = (id) => {
+  return axios
+    .delete(`${API_URL}product/${id}`)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log("Error en el DELETE: ", err);
+      throw err;
+    });
+};
