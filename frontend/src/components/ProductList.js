@@ -3,7 +3,9 @@ import Product from "./Product";
 
 const ProductList = ({ products, onEdit, onDelete }) => {
   const handleDelete = (product) => {
-    const confirmDelete = window.confirm(`¿Estás seguro de eliminar el producto "${product.name}"?`);
+    const confirmDelete = window.confirm(
+      `¿Estás seguro de eliminar el producto "${product.name}"?`
+    );
     if (confirmDelete) {
       onDelete(product.id);
     }

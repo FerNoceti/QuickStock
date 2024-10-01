@@ -24,12 +24,12 @@ export const addProduct = (product) => {
 
 export const updateProduct = (id, product) => {
   return axios
-      .put(`${API_URL}product/${id}`, product)
-      .then((res) => res.data)
-      .catch((err) => {
-          console.log("Error en el PUT: ", err);
-          throw err;
-      });
+    .put(`${API_URL}product/${id}`, product)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log("Error en el PUT: ", err);
+      throw err;
+    });
 };
 
 export const deleteProduct = (id) => {

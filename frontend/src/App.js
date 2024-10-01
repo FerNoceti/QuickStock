@@ -3,9 +3,9 @@ import ProductPage from "./pages/ProductPage";
 
 function App() {
   return (
-	<div>
-	  <ProductPage />
-	</div>
+    <div>
+      <ProductPage />
+    </div>
   );
 }
 

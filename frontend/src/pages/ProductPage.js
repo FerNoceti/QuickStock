@@ -34,11 +34,17 @@ const ProductPage = () => {
 
   return (
     <div>
-      <ProductForm productToEdit={selectedProduct} onSubmit={handleFormSubmit} />
-      <ProductList products={products} onEdit={handleProductEdit} onDelete={handleProductDelete} />
+      <ProductForm
+        productToEdit={selectedProduct}
+        onSubmit={handleFormSubmit}
+      />
+      <ProductList
+        products={products}
+        onEdit={handleProductEdit}
+        onDelete={handleProductDelete}
+      />
     </div>
   );
 };
 
 export default ProductPage;
-
