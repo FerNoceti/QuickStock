@@ -1,4 +1,5 @@
 import React from 'react';
+import Product from './Product';
 
 const ProductList = ({ products }) => {
   return (
@@ -6,10 +7,7 @@ const ProductList = ({ products }) => {
       <ul>
         {products.map((product) => (
           <li key={product.id}>
-            <h2>{product.name}</h2>
-            <p>Descripción: {product.description ? product.description : "Sin descripción disponible"}</p>
-            <p>Precio: ${product.price}</p>
-            <p>Stock: {product.stock}</p>
+            <Product product={product} />
           </li>
         ))}
       </ul>
