@@ -6,24 +6,24 @@ import jakarta.persistence.*;
 @Table(name = "products")
 public class Product {
 
-    //Attributes
+    // Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = true)
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "stock")
+    @Column(name = "stock", nullable = false)
     private int stock;
 
-    //Constructors
+    // Constructors
     public Product() {
     }
 
@@ -31,7 +31,7 @@ public class Product {
         this.name = name;
     }
 
-    //Getters and Setters
+    // Getters and Setters
     public void setId(Long id) {
         this.id = id;
     }
