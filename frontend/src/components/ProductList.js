@@ -1,5 +1,6 @@
 import React from "react";
 import Product from "./Product";
+import "../styles/ProductList.css";
 
 const ProductList = ({ products, onEdit, onDelete }) => {
   const handleDelete = (product) => {
@@ -12,13 +13,25 @@ const ProductList = ({ products, onEdit, onDelete }) => {
   };
 
   return (
-    <div>
-      <ul>
+    <div className="product-list">
+      <ul className="product-list-ul">
         {products.map((product) => (
-          <li key={product.id}>
+          <li key={product.id} className="product-list-item">
             <Product product={product} />
-            <button onClick={() => onEdit(product)}>Editar</button>
-            <button onClick={() => handleDelete(product)}>Eliminar</button> {}
+            <div className="product-list-actions">
+              <button
+                className="product-list-btn edit-btn"
+                onClick={() => onEdit(product)}
+              >
+                Editar
+              </button>
+              <button
+                className="product-list-btn delete-btn"
+                onClick={() => handleDelete(product)}
+              >
+                Eliminar
+              </button>
+            </div>
           </li>
         ))}
       </ul>

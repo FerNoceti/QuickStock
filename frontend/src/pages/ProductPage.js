@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ProductForm from "../components/ProductForm";
 import ProductList from "../components/ProductList";
 import { getProducts, deleteProduct } from "../services/productService";
+import "../styles/ProductPage.css";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -23,7 +24,7 @@ const ProductPage = () => {
 
   const handleFormSubmit = () => {
     loadProducts();
-    setSelectedProduct(null);
+    setSelectedProduct(null); // Limpiar el formulario después de crear/editar
   };
 
   const handleProductDelete = (id) => {
@@ -33,16 +34,22 @@ const ProductPage = () => {
   };
 
   return (
-    <div>
-      <ProductForm
-        productToEdit={selectedProduct}
-        onSubmit={handleFormSubmit}
-      />
-      <ProductList
-        products={products}
-        onEdit={handleProductEdit}
-        onDelete={handleProductDelete}
-      />
+    <div className="product-page">
+      <div className="product-list-container">
+        <h1>Lista de Productos</h1>
+        <ProductList
+          products={products}
+          onEdit={handleProductEdit}
+          onDelete={handleProductDelete}
+        />
+      </div>
+      <div className="product-form-container">
+        <h1>Formulario de Producto</h1>
+        <ProductForm
+          productToEdit={selectedProduct}
+          onSubmit={handleFormSubmit}
+        />
+      </div>
     </div>
   );
 };

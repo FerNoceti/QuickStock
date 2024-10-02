@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { addProduct, updateProduct } from "../services/productService";
+import "../styles/ProductForm.css";
 
 const ProductForm = ({ productToEdit, onSubmit }) => {
   const [product, setProduct] = useState({
@@ -13,7 +14,7 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
     if (productToEdit) {
       setProduct(productToEdit); // Precargar el producto en modo edición
     } else {
-      setProduct({ name: "", description: "", price: "", stock: "" }); // Si no hay producto, limpiar el formulario
+      setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario si no hay producto
     }
   }, [productToEdit]);
 
@@ -25,12 +26,10 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (productToEdit) {
-      // Si hay un producto para editar, se hace la actualización (PUT)
       updateProduct(product.id, product)
-        .then(onSubmit) // Llama a la función onSubmit para recargar la lista de productos
+        .then(onSubmit) 
         .catch((err) => console.log(err));
     } else {
-      // Si no hay producto para editar, se hace la creación (POST)
       addProduct(product)
         .then(onSubmit)
         .catch((err) => console.log(err));
@@ -38,36 +37,52 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="name"
-        placeholder="Nombre del producto"
-        value={product.name}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="description"
-        placeholder="Descripción"
-        value={product.description}
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="price"
-        placeholder="Precio"
-        value={product.price}
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="stock"
-        placeholder="Stock"
-        value={product.stock}
-        onChange={handleChange}
-      />
-      <button type="submit">
+    <form onSubmit={handleSubmit} className="product-form">
+      <div className="form-group">
+        <label htmlFor="name">Nombre del producto</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Nombre del producto"
+          value={product.name}
+          onChange={handleChange}
+          className="form-input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="description">Descripción</label>
+        <input
+          type="text"
+          name="description"
+          placeholder="Descripción"
+          value={product.description}
+          onChange={handleChange}
+          className="form-input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="price">Precio</label>
+        <input
+          type="number"
+          name="price"
+          placeholder="Precio"
+          value={product.price}
+          onChange={handleChange}
+          className="form-input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="stock">Stock</label>
+        <input
+          type="number"
+          name="stock"
+          placeholder="Stock"
+          value={product.stock}
+          onChange={handleChange}
+          className="form-input"
+        />
+      </div>
+      <button type="submit" className="form-button">
         {productToEdit ? "Actualizar Producto" : "Crear Producto"}
       </button>
     </form>
