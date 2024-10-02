@@ -27,13 +27,24 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
     e.preventDefault();
     if (productToEdit) {
       updateProduct(product.id, product)
-        .then(onSubmit) 
+        .then(() => {
+          onSubmit();
+          setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario
+        })
         .catch((err) => console.log(err));
     } else {
       addProduct(product)
-        .then(onSubmit)
+        .then(() => {
+          onSubmit();
+          setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario
+        })
         .catch((err) => console.log(err));
     }
+  };
+
+  const handleClear = () => {
+    setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario manualmente
+    onSubmit(); // Salir del modo edición
   };
 
   return (
@@ -82,9 +93,14 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
           className="form-input"
         />
       </div>
-      <button type="submit" className="form-button">
-        {productToEdit ? "Actualizar Producto" : "Crear Producto"}
-      </button>
+      <div className="form-actions">
+        <button type="submit" className="form-button">
+          {productToEdit ? "Actualizar Producto" : "Crear Producto"}
+        </button>
+        <button type="button" onClick={handleClear} className="form-button clear-button">
+          Limpiar Formulario
+        </button>
+      </div>
     </form>
   );
 };
