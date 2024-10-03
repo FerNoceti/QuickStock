@@ -10,6 +10,8 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
     stock: "",
   });
 
+  const [errors, setErrors] = useState({}); // Para almacenar los errores
+
   useEffect(() => {
     if (productToEdit) {
       setProduct(productToEdit); // Precargar el producto en modo edición
@@ -23,27 +25,62 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
     setProduct({ ...product, [name]: value });
   };
 
+  // Función para validar los campos del formulario
+  const validateForm = () => {
+    let formErrors = {};
+  
+    // Validar el nombre del producto (alfabético y no vacío)
+    if (!product.name.trim()) {
+      formErrors.name = "El nombre es obligatorio.";
+    } else if (!/^[a-zA-Z\s]+$/.test(product.name.trim())) {
+      formErrors.name = "El nombre solo debe contener letras.";
+    }
+  
+    // Validar el precio (número positivo)
+    const price = parseFloat(product.price);
+    if (!price || isNaN(price) || price <= 0) {
+      formErrors.price = "El precio debe ser un número positivo.";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(product.price)) {
+      formErrors.price = "El precio debe tener como máximo dos decimales.";
+    }
+  
+    // Validar el stock (número no negativo)
+    const stock = parseInt(product.stock, 10);
+    if (isNaN(stock)) {
+      formErrors.stock = "El stock debe ser un número.";
+    } else if (stock < 0) {
+      formErrors.stock = "El stock debe ser cero o un número positivo.";
+    }
+  
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0; // Devuelve true si no hay errores
+  };
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (productToEdit) {
-      updateProduct(product.id, product)
-        .then(() => {
-          onSubmit();
-          setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario
-        })
-        .catch((err) => console.log(err));
-    } else {
-      addProduct(product)
-        .then(() => {
-          onSubmit();
-          setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario
-        })
-        .catch((err) => console.log(err));
+    if (validateForm()) {
+      if (productToEdit) {
+        updateProduct(product.id, product)
+          .then(() => {
+            onSubmit();
+            setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario
+          })
+          .catch((err) => console.log(err));
+      } else {
+        addProduct(product)
+          .then(() => {
+            onSubmit();
+            setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario
+          })
+          .catch((err) => console.log(err));
+      }
     }
   };
 
   const handleClear = () => {
     setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario manualmente
+    setErrors({}); // Limpiar los errores
     onSubmit(); // Salir del modo edición
   };
 
@@ -59,13 +96,14 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
           onChange={handleChange}
           className="form-input"
         />
+        {errors.name && <p className="error-text">{errors.name}</p>}
       </div>
       <div className="form-group">
         <label htmlFor="description">Descripción</label>
         <input
           type="text"
           name="description"
-          placeholder="Descripción"
+          placeholder="Descripción (Opcional)"
           value={product.description}
           onChange={handleChange}
           className="form-input"
@@ -81,6 +119,7 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
           onChange={handleChange}
           className="form-input"
         />
+        {errors.price && <p className="error-text">{errors.price}</p>}
       </div>
       <div className="form-group">
         <label htmlFor="stock">Stock</label>
@@ -92,6 +131,7 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
           onChange={handleChange}
           className="form-input"
         />
+        {errors.stock && <p className="error-text">{errors.stock}</p>}
       </div>
       <div className="form-actions">
         <button type="submit" className="form-button">
