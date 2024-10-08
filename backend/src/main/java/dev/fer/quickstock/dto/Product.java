@@ -1,6 +1,9 @@
 package dev.fer.quickstock.dto;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "products")
@@ -11,21 +14,25 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name cannot be blank")
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = true)
+    @Column(name = "description")
     private String description;
 
+    @NotNull(message = "Price cannot be null")
+    @Min(value = 0, message = "Price must be a positive number")
     @Column(name = "price", nullable = false)
-    private double price;
+    private Double price;
 
+    @NotNull(message = "Stock cannot be null")
+    @Min(value = 0, message = "Stock must be a positive number")
     @Column(name = "stock", nullable = false)
-    private int stock;
+    private Integer stock;
 
     // Constructors
-    public Product() {
-    }
+    public Product() {}
 
     public Product(String name) {
         this.name = name;
@@ -56,19 +63,19 @@ public class Product {
         this.description = description;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 }
