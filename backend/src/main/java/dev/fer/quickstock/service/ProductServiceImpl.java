@@ -2,21 +2,19 @@ package dev.fer.quickstock.service;
 
 import dev.fer.quickstock.dto.Product;
 import dev.fer.quickstock.repository.ProductRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 @Service
-public class ProductServiceImp implements ProductService {
+public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Autowired
-    public ProductServiceImp(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
@@ -37,13 +35,13 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResponseEntity<Product> saveProduct(@Valid @RequestBody Product product) {
+    public ResponseEntity<Product> saveProduct(Product product) {
         Product savedProduct = productRepository.save(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Product> updateProduct(Long id, @Valid @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(Long id, Product product) {
         return productRepository.findById(id).map(productToUpdate -> {
             productToUpdate.setName(product.getName());
             productToUpdate.setDescription(product.getDescription());
@@ -55,10 +53,10 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteProduct(Long id) {
+    public ResponseEntity<Object> deleteProduct(Long id) {
         return productRepository.findById(id).map(productToDelete -> {
             productRepository.delete(productToDelete);
-            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

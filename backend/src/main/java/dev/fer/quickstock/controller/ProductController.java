@@ -2,11 +2,13 @@ package dev.fer.quickstock.controller;
 
 import dev.fer.quickstock.dto.Product;
 import dev.fer.quickstock.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class ProductController {
@@ -29,18 +31,18 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> saveProduct(@Valid @RequestBody Product product) {
         return productService.saveProduct(product);
     }
 
     @PutMapping("/product/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @Valid @RequestBody Product product) {
         return productService.updateProduct(id, product);
     }
 
     @DeleteMapping("/product/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> deleteProduct(@PathVariable("id") Long id) {
         return productService.deleteProduct(id);
     }
-
 }
+
