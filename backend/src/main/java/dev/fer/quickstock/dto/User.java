@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -22,7 +21,8 @@ public class User {
     private String passwordHash;
 
     // Constructors
-    public User() {}
+    public User() {
+    }
 
     public User(String username, String passwordHash) {
         this.username = username;

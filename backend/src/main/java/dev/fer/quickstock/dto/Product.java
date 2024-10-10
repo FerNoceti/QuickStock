@@ -32,19 +32,20 @@ public class Product {
     private Integer stock;
 
     // Constructors
-    public Product() {}
+    public Product() {
+    }
 
     public Product(String name) {
         this.name = name;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     // Getters and Setters
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
