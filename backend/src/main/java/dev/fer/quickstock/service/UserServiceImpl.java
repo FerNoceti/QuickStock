@@ -1,6 +1,7 @@
 package dev.fer.quickstock.service;
 
 import dev.fer.quickstock.dto.User;
+import dev.fer.quickstock.dto.UserLogin;
 import dev.fer.quickstock.dto.UserResponse;
 import dev.fer.quickstock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +29,18 @@ public class UserServiceImpl implements UserService {
         UserResponse userResponse = new UserResponse(user.getUsername());
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
-}
+
+    @Override
+    public ResponseEntity<String> loginUser(UserLogin userLogin) {
+        User user = userRepository.findById(userLogin.getUsername()).orElse(null);
+        if (user == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        if (bCryptPasswordEncoder.matches(userLogin.getPassword(), user.getPassword())) {
+            return new ResponseEntity<>("Login successful", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Incorrect password", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    }

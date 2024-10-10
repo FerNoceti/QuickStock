@@ -1,6 +1,7 @@
 package dev.fer.quickstock.controller;
 
 import dev.fer.quickstock.dto.User;
+import dev.fer.quickstock.dto.UserLogin;
 import dev.fer.quickstock.dto.UserResponse;
 import dev.fer.quickstock.service.UserService;
 import jakarta.validation.Valid;
@@ -25,4 +26,8 @@ public class UserController {
         return userService.saveUser(user);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@Valid @RequestBody UserLogin userLogin) {
+        return userService.loginUser(userLogin);
+    }
 }
