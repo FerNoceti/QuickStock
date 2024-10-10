@@ -1,8 +1,10 @@
 package dev.fer.quickstock.dto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -12,9 +14,11 @@ public class User {
     // Attributes
     @Id
     @NotNull(message = "Username cannot be null")
+    @Column(name = "username", nullable = false)
     private String username;
 
     @NotNull(message = "Password hash cannot be null")
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     // Constructors
