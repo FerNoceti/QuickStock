@@ -2,7 +2,6 @@ package dev.fer.quickstock.service;
 
 import dev.fer.quickstock.dto.User;
 import dev.fer.quickstock.repository.UserRepository;
-import dev.fer.quickstock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
