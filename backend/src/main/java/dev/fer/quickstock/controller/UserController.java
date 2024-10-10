@@ -1,6 +1,7 @@
 package dev.fer.quickstock.controller;
 
 import dev.fer.quickstock.dto.User;
+import dev.fer.quickstock.dto.UserResponse;
 import dev.fer.quickstock.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> saveUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserResponse> saveUser(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
 

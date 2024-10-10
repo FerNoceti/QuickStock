@@ -16,17 +16,17 @@ public class User {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @NotNull(message = "Password hash cannot be null")
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
+    @NotNull(message = "Password cannot be null")
+    @Column(name = "password", nullable = false)
+    private String password;
 
     // Constructors
     public User() {
     }
 
-    public User(String username, String passwordHash) {
+    public User(String username, String password) {
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.password = password;
     }
 
     // Getters and Setters
@@ -38,12 +38,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

@@ -1,6 +1,7 @@
 package dev.fer.quickstock.service;
 
 import dev.fer.quickstock.dto.User;
+import dev.fer.quickstock.dto.UserResponse;
 import dev.fer.quickstock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<User> saveUser(User user) {
-        user.setPasswordHash(bCryptPasswordEncoder.encode(user.getPasswordHash()));
+    public ResponseEntity<UserResponse> saveUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        UserResponse userResponse = new UserResponse(user.getUsername());
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 }
