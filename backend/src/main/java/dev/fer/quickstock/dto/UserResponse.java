@@ -3,7 +3,8 @@ package dev.fer.quickstock.dto;
 public class UserResponse {
     private String username;
 
-    public UserResponse() {}
+    public UserResponse() {
+    }
 
     public UserResponse(String username) {
         this.username = username;

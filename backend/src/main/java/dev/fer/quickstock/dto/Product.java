@@ -36,7 +36,8 @@ public class Product {
     private User user; // Esta propiedad debe existir
 
     // Constructors
-    public Product() {}
+    public Product() {
+    }
 
     // Getters and Setters
     public Long getId() {
