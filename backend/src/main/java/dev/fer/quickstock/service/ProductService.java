@@ -18,4 +18,4 @@ public interface ProductService {
 
     ResponseEntity<Void> deleteProductForUser(Long id, String username);
 
-    }
+}
