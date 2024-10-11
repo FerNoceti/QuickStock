@@ -1,9 +1,9 @@
-package dev.fer.quickstock.service;
+package dev.fer.quickstock.service.product;
 
-import dev.fer.quickstock.dto.Product;
-import dev.fer.quickstock.dto.ProductResponse;
-import dev.fer.quickstock.dto.User;
-import dev.fer.quickstock.dto.UserResponse;
+import dev.fer.quickstock.dto.product.Product;
+import dev.fer.quickstock.dto.product.ProductResponse;
+import dev.fer.quickstock.dto.user.User;
+import dev.fer.quickstock.dto.user.UserResponse;
 import dev.fer.quickstock.exception.ForbiddenException;
 import dev.fer.quickstock.exception.UserNotFoundException;
 import dev.fer.quickstock.repository.ProductRepository;

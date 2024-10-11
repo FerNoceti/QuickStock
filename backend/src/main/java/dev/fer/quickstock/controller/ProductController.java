@@ -1,11 +1,11 @@
 package dev.fer.quickstock.controller;
 
-import dev.fer.quickstock.dto.Product;
-import dev.fer.quickstock.dto.ProductResponse;
+import dev.fer.quickstock.dto.product.Product;
+import dev.fer.quickstock.dto.product.ProductResponse;
 import dev.fer.quickstock.exception.ForbiddenException;
 import dev.fer.quickstock.exception.UserNotFoundException;
 import dev.fer.quickstock.security.JwtTokenService;
-import dev.fer.quickstock.service.ProductService;
+import dev.fer.quickstock.service.product.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

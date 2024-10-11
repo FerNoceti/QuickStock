@@ -1,5 +1,6 @@
-package dev.fer.quickstock.dto;
+package dev.fer.quickstock.dto.user;
 
+import dev.fer.quickstock.dto.product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 

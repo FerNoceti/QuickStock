@@ -1,4 +1,6 @@
-package dev.fer.quickstock.dto;
+package dev.fer.quickstock.dto.product;
+
+import dev.fer.quickstock.dto.user.UserResponse;
 
 public class ProductResponse {
     private Long id;

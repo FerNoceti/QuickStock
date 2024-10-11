@@ -1,7 +1,7 @@
-package dev.fer.quickstock.service;
+package dev.fer.quickstock.service.product;
 
-import dev.fer.quickstock.dto.Product;
-import dev.fer.quickstock.dto.ProductResponse;
+import dev.fer.quickstock.dto.product.Product;
+import dev.fer.quickstock.dto.product.ProductResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

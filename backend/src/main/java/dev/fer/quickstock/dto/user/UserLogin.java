@@ -1,4 +1,4 @@
-package dev.fer.quickstock.dto;
+package dev.fer.quickstock.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,6 +1,6 @@
 package dev.fer.quickstock.repository;
 
-import dev.fer.quickstock.dto.Product;
+import dev.fer.quickstock.dto.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

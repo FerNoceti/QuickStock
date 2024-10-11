@@ -1,9 +1,9 @@
 package dev.fer.quickstock.controller;
 
-import dev.fer.quickstock.dto.User;
-import dev.fer.quickstock.dto.UserLogin;
-import dev.fer.quickstock.dto.UserResponse;
-import dev.fer.quickstock.service.UserService;
+import dev.fer.quickstock.dto.user.User;
+import dev.fer.quickstock.dto.user.UserLogin;
+import dev.fer.quickstock.dto.user.UserResponse;
+import dev.fer.quickstock.service.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
