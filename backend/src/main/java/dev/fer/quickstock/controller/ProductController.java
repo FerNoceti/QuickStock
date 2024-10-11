@@ -2,10 +2,13 @@ package dev.fer.quickstock.controller;
 
 import dev.fer.quickstock.dto.Product;
 import dev.fer.quickstock.dto.ProductResponse;
+import dev.fer.quickstock.exception.ForbiddenException;
+import dev.fer.quickstock.exception.UserNotFoundException;
 import dev.fer.quickstock.security.JwtTokenService;
 import dev.fer.quickstock.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,32 +26,69 @@ public class ProductController {
         this.jwtTokenService = jwtTokenService;
     }
 
-    @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
-        return productService.getProducts();
+    @GetMapping("/product/{username}")
+    public ResponseEntity<List<ProductResponse>> getProductsForUser(@PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+
+        try {
+            return productService.getAllProductsByUser(username, token);
+        } catch (ForbiddenException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
-    @GetMapping("/product/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
-        return productService.getProductById(id);
+    @GetMapping("/product/{username}/{id}")
+    public ResponseEntity<ProductResponse> getProductByIdForUser(@PathVariable("id") Long id, @PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+
+        try {
+            return productService.getProductByIdForUser(id, username, token);
+        } catch (ForbiddenException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PostMapping("/product")
-    public ResponseEntity<ProductResponse> saveProduct(@Valid @RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<ProductResponse> saveProductForUser(@Valid @RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.substring(7);
         String username = jwtTokenService.extractUsername(token);
 
-        return productService.saveProductToUser(product, username);
+        try {
+            return productService.addProductForUser(product, username);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
-    @PutMapping("/product/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @Valid @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+    @PutMapping("/product/{username}/{id}")
+    public ResponseEntity<ProductResponse> updateProductForUser(@PathVariable("id") Long id, @Valid @RequestBody Product product, @PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+
+        try {
+            return productService.updateProductForUser(id, product, username, token);
+        } catch (ForbiddenException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
-    @DeleteMapping("/product/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable("id") Long id) {
-        return productService.deleteProduct(id);
+    @DeleteMapping("/product/{username}/{id}")
+    public ResponseEntity<Void> deleteProductForUser(@PathVariable("id") Long id, @PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+
+        try {
+            return productService.deleteProductForUser(id, username, token);
+        } catch (ForbiddenException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
+
 }
 
