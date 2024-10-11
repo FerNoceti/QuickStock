@@ -14,7 +14,7 @@ public interface ProductService {
 
     ResponseEntity<ProductResponse> addProductForUser(Product product, String username);
 
-    ResponseEntity<ProductResponse> updateProductForUser(Long id, Product product, String username);
+    ResponseEntity<ProductResponse> updateProductForUser(Long id, Product product, String username, String token);
 
     ResponseEntity<Void> deleteProductForUser(Long id, String username, String token);
 
