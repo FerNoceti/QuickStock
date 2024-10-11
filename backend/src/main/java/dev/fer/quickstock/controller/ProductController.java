@@ -39,6 +39,19 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/product/{username}/{id}")
+    public ResponseEntity<ProductResponse> getProductByIdForUser(@PathVariable("id") Long id, @PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+
+        try {
+            return productService.getProductByIdForUser(id, username, token);
+        } catch (ForbiddenException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
     @PostMapping("/product")
     public ResponseEntity<ProductResponse> saveProductForUser(@Valid @RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.substring(7);

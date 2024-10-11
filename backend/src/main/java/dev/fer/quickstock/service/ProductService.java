@@ -10,7 +10,7 @@ public interface ProductService {
 
     ResponseEntity<List<ProductResponse>> getAllProductsByUser(String username, String token);
 
-    ResponseEntity<ProductResponse> getProductByIdForUser(Long id, String username);
+    ResponseEntity<ProductResponse> getProductByIdForUser(Long id, String username, String token);
 
     ResponseEntity<ProductResponse> addProductForUser(Product product, String username);
 

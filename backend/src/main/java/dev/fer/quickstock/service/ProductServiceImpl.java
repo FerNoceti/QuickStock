@@ -49,8 +49,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<ProductResponse> getProductByIdForUser(Long id, String username) {
-        return null;
+    public ResponseEntity<ProductResponse> getProductByIdForUser(Long id, String username, String token) {
+        String tokenUsername = jwtTokenService.extractUsername(token);
+
+        if (!username.equals(tokenUsername)) {
+            throw new ForbiddenException("You are not allowed to access this user's products");
+        }
+
+        User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        Product product = productRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Product not found"));
+
+        if (!product.getUser().getUsername().equals(username)) {
+            throw new ForbiddenException("You are not allowed to access this product");
+        }
+
+        ProductResponse productResponse = new ProductResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice(), product.getStock(), new UserResponse(user.getUsername()));
+
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
     @Override
