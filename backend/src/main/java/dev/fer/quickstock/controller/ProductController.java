@@ -1,6 +1,7 @@
 package dev.fer.quickstock.controller;
 
 import dev.fer.quickstock.dto.Product;
+import dev.fer.quickstock.dto.ProductResponse;
 import dev.fer.quickstock.security.JwtTokenService;
 import dev.fer.quickstock.service.ProductService;
 import jakarta.validation.Valid;
@@ -33,12 +34,11 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<Product> saveProduct(@Valid @RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
-        String token = authorizationHeader.substring(7); // Extrae el token después de "Bearer "
-        System.out.println(token);
-        String username = jwtTokenService.extractUsername(token); // Usa tu servicio para extraer el nombre de usuario
+    public ResponseEntity<ProductResponse> saveProduct(@Valid @RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+        String username = jwtTokenService.extractUsername(token);
 
-        return productService.saveProductToUser(product, username); // Pasa el producto y el nombre de usuario
+        return productService.saveProductToUser(product, username);
     }
 
     @PutMapping("/product/{id}")

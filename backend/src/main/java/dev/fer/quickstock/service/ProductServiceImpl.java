@@ -1,6 +1,7 @@
 package dev.fer.quickstock.service;
 
 import dev.fer.quickstock.dto.Product;
+import dev.fer.quickstock.dto.ProductResponse;
 import dev.fer.quickstock.dto.User;
 import dev.fer.quickstock.dto.UserResponse;
 import dev.fer.quickstock.repository.ProductRepository;
@@ -39,20 +40,33 @@ public class ProductServiceImpl implements ProductService {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    public ResponseEntity<Product> saveProductToUser(Product product, String username) {
+    public ResponseEntity<ProductResponse> saveProductToUser(Product product, String username) {
         User user = userRepository.findById(username).orElse(null);
 
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        user.setPassword(""); // Clear password for security reasons
-
+        user.setPassword("");
         product.setUser(user);
+
         Product savedProduct = productRepository.save(product);
 
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUsername(user.getUsername());
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(savedProduct.getId());
+        productResponse.setName(savedProduct.getName());
+        productResponse.setDescription(savedProduct.getDescription());
+        productResponse.setPrice(savedProduct.getPrice());
+        productResponse.setStock(savedProduct.getStock());
+        productResponse.setUser(userResponse);
+
+        return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
     }
+
 
     @Override
     public ResponseEntity<Product> updateProduct(Long id, Product product) {
