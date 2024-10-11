@@ -16,6 +16,6 @@ public interface ProductService {
 
     ResponseEntity<ProductResponse> updateProductForUser(Long id, Product product, String username);
 
-    ResponseEntity<Void> deleteProductForUser(Long id, String username);
+    ResponseEntity<Void> deleteProductForUser(Long id, String username, String token);
 
 }

@@ -87,7 +87,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteProductForUser(Long id, String username) {
-        return null;
+    public ResponseEntity<Void> deleteProductForUser(Long id, String username, String token) {
+        User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        Product product = productRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Product not found"));
+
+        if (!product.getUser().getUsername().equals(username)) {
+            throw new ForbiddenException("You are not allowed to delete this product");
+        }
+
+        productRepository.delete(product);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
