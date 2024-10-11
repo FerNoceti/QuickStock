@@ -8,13 +8,14 @@ import java.util.List;
 
 public interface ProductService {
 
-    ResponseEntity<List<Product>> getProducts();
+    ResponseEntity<List<ProductResponse>> getAllProductsByUser(String username, String token);
 
-    ResponseEntity<Product> getProductById(Long id);
+    ResponseEntity<ProductResponse> getProductByIdForUser(Long id, String username);
 
-    ResponseEntity<ProductResponse> saveProductToUser(Product product, String username);
+    ResponseEntity<ProductResponse> addProductForUser(Product product, String username);
 
-    ResponseEntity<Product> updateProduct(Long id, Product product);
+    ResponseEntity<ProductResponse> updateProductForUser(Long id, Product product, String username);
 
-    ResponseEntity<Object> deleteProduct(Long id);
-}
+    ResponseEntity<Void> deleteProductForUser(Long id, String username);
+
+    }
