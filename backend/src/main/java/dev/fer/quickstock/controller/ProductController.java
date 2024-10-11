@@ -1,6 +1,7 @@
 package dev.fer.quickstock.controller;
 
 import dev.fer.quickstock.dto.Product;
+import dev.fer.quickstock.security.JwtTokenService;
 import dev.fer.quickstock.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final JwtTokenService jwtTokenService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, JwtTokenService jwtTokenService) {
         this.productService = productService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     @GetMapping("/products")
@@ -30,8 +33,12 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<Product> saveProduct(@Valid @RequestBody Product product) {
-        return productService.saveProduct(product);
+    public ResponseEntity<Product> saveProduct(@Valid @RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7); // Extrae el token después de "Bearer "
+        System.out.println(token);
+        String username = jwtTokenService.extractUsername(token); // Usa tu servicio para extraer el nombre de usuario
+
+        return productService.saveProductToUser(product, username); // Pasa el producto y el nombre de usuario
     }
 
     @PutMapping("/product/{id}")

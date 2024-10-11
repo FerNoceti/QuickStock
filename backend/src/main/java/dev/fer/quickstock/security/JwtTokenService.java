@@ -28,7 +28,7 @@ public class JwtTokenService {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
-    
+
     public String extractUsername(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
@@ -37,9 +37,9 @@ public class JwtTokenService {
                 .getSubject();
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, String username) {
         String extractedUsername = extractUsername(token);
-        return !isTokenExpired(token) && extractedUsername.equals("username");
+        return !isTokenExpired(token) && extractedUsername.equals(username);
     }
 
     private boolean isTokenExpired(String token) {

@@ -1,6 +1,7 @@
 package dev.fer.quickstock.service;
 
 import dev.fer.quickstock.dto.Product;
+import dev.fer.quickstock.dto.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface ProductService {
 
     ResponseEntity<Product> getProductById(Long id);
 
-    ResponseEntity<Product> saveProduct(Product product);
+    ResponseEntity<Product> saveProductToUser(Product product, String username);
 
     ResponseEntity<Product> updateProduct(Long id, Product product);
 

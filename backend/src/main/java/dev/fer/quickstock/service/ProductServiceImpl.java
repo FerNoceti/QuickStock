@@ -1,7 +1,10 @@
 package dev.fer.quickstock.service;
 
 import dev.fer.quickstock.dto.Product;
+import dev.fer.quickstock.dto.User;
+import dev.fer.quickstock.dto.UserResponse;
 import dev.fer.quickstock.repository.ProductRepository;
+import dev.fer.quickstock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +15,12 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository) {
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -34,9 +39,18 @@ public class ProductServiceImpl implements ProductService {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @Override
-    public ResponseEntity<Product> saveProduct(Product product) {
+    public ResponseEntity<Product> saveProductToUser(Product product, String username) {
+        User user = userRepository.findById(username).orElse(null);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        user.setPassword(""); // Clear password for security reasons
+
+        product.setUser(user);
         Product savedProduct = productRepository.save(product);
+
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 

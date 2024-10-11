@@ -1,10 +1,9 @@
 package dev.fer.quickstock.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -19,6 +18,9 @@ public class User {
     @NotNull(message = "Password cannot be null")
     @Column(name = "password", nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Product> products;
 
     // Constructors
     public User() {

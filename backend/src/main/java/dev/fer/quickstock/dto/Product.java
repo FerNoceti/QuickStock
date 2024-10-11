@@ -31,19 +31,18 @@ public class Product {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username", nullable = false)
+    private User user; // Esta propiedad debe existir
+
     // Constructors
-    public Product() {
-    }
+    public Product() {}
 
-    public Product(String name) {
-        this.name = name;
-    }
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
 
-    // Getters and Setters
     public void setId(Long id) {
         this.id = id;
     }
@@ -78,5 +77,13 @@ public class Product {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
