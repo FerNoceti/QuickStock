@@ -81,7 +81,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<ProductResponse> addProductForUser(Product product, String username) {
+    public ResponseEntity<ProductResponse> addProductForUser(Product product, String username, String token) {
+        if (tokenBlacklistService.isTokenRevoked(token)) {
+            throw new ForbiddenException("Token has been revoked");
+        }
+
+        if (!username.equals(jwtTokenService.extractUsername(token))) {
+            throw new ForbiddenException("You are not allowed to add products for this user");
+        }
+
         User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
         product.setUser(user);
 

@@ -58,7 +58,7 @@ public class ProductController {
         String username = jwtTokenService.extractUsername(token);
 
         try {
-            return productService.addProductForUser(product, username);
+            return productService.addProductForUser(product, username, token);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

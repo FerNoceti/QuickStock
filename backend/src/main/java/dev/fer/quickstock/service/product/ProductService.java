@@ -12,7 +12,7 @@ public interface ProductService {
 
     ResponseEntity<ProductResponse> getProductByIdForUser(Long id, String username, String token);
 
-    ResponseEntity<ProductResponse> addProductForUser(Product product, String username);
+    ResponseEntity<ProductResponse> addProductForUser(Product product, String username, String token);
 
     ResponseEntity<ProductResponse> updateProductForUser(Long id, Product product, String username, String token);
 
