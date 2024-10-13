@@ -9,6 +9,7 @@ import dev.fer.quickstock.exception.UserNotFoundException;
 import dev.fer.quickstock.repository.ProductRepository;
 import dev.fer.quickstock.repository.UserRepository;
 import dev.fer.quickstock.security.JwtTokenService;
+import dev.fer.quickstock.security.TokenBlacklistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +22,23 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final JwtTokenService jwtTokenService;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository, JwtTokenService jwtTokenService) {
+    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository, JwtTokenService jwtTokenService, TokenBlacklistService tokenBlacklistService) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.jwtTokenService = jwtTokenService;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @Override
     public ResponseEntity<List<ProductResponse>> getAllProductsByUser(String username, String token) {
         String tokenUsername = jwtTokenService.extractUsername(token);
+
+        if (tokenBlacklistService.isTokenRevoked(token)) {
+            throw new ForbiddenException("Token has been revoked");
+        }
 
         if (!username.equals(tokenUsername)) {
             throw new ForbiddenException("You are not allowed to access this user's products");
@@ -56,6 +63,10 @@ public class ProductServiceImpl implements ProductService {
             throw new ForbiddenException("You are not allowed to access this user's products");
         }
 
+        if (tokenBlacklistService.isTokenRevoked(token)) {
+            throw new ForbiddenException("Token has been revoked");
+        }
+
         User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
 
         Product product = productRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Product not found"));
@@ -72,7 +83,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseEntity<ProductResponse> addProductForUser(Product product, String username) {
         User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
-
         product.setUser(user);
 
         Product savedProduct = productRepository.save(product);

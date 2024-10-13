@@ -2,6 +2,7 @@ package dev.fer.quickstock.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class JwtTokenService {
 
     @Value("${jwt.expiration}")
     private long EXPIRATION_TIME;
+
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -39,6 +43,11 @@ public class JwtTokenService {
 
     public boolean validateToken(String token, String username) {
         String extractedUsername = extractUsername(token);
+
+        if (tokenBlacklistService.isTokenRevoked(token)) {
+            return false;
+        }
+
         return !isTokenExpired(token) && extractedUsername.equals(username);
     }
 
