@@ -6,10 +6,12 @@ import dev.fer.quickstock.dto.user.UserResponse;
 import dev.fer.quickstock.service.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class UserController {
 
     private final UserService userService;
@@ -19,7 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user")
+    @PostMapping("/register")
     public ResponseEntity<UserResponse> saveUser(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
@@ -31,6 +33,10 @@ public class UserController {
 
     @PostMapping("/logout/{username}")
     public ResponseEntity<Void> logoutUser(@PathVariable String username, @RequestHeader("Authorization") String authorizationHeader) {
-        return userService.logoutUser(username, authorizationHeader.substring(7));
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authorizationHeader.substring(7);
+        return userService.logoutUser(username, token);
     }
 }

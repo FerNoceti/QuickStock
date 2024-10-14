@@ -49,7 +49,6 @@ public class UserServiceImpl implements UserService {
         }
 
         String token = jwtTokenService.generateToken(user.getUsername());
-
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
@@ -66,15 +65,11 @@ public class UserServiceImpl implements UserService {
         }
 
         tokenBlacklistService.revokeToken(token);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
     @Override
     public ResponseEntity<UserResponse> updateUser(String username, User user, String token) {
         return null;
     }
-
-
 }

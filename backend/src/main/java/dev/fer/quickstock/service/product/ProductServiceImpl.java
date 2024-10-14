@@ -32,8 +32,7 @@ public class ProductServiceImpl implements ProductService {
         this.tokenBlacklistService = tokenBlacklistService;
     }
 
-    @Override
-    public ResponseEntity<List<ProductResponse>> getAllProductsByUser(String username, String token) {
+    private void validateUserAndToken(String username, String token) {
         String tokenUsername = jwtTokenService.extractUsername(token);
 
         if (tokenBlacklistService.isTokenRevoked(token)) {
@@ -41,15 +40,29 @@ public class ProductServiceImpl implements ProductService {
         }
 
         if (!username.equals(tokenUsername)) {
-            throw new ForbiddenException("You are not allowed to access this user's products");
+            throw new ForbiddenException("You are not allowed to perform this action");
         }
+    }
+
+    private ProductResponse createProductResponse(Product product) {
+        return new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getStock(),
+                new UserResponse(product.getUser().getUsername())
+        );
+    }
+
+    @Override
+    public ResponseEntity<List<ProductResponse>> getAllProductsByUser(String username, String token) {
+        validateUserAndToken(username, token);
 
         User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        List<Product> products = user.getProducts();
-
-        List<ProductResponse> productResponses = products.stream()
-                .map(product -> new ProductResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice(), product.getStock(), new UserResponse(user.getUsername())))
+        List<ProductResponse> productResponses = user.getProducts().stream()
+                .map(this::createProductResponse)
                 .toList();
 
         return new ResponseEntity<>(productResponses, HttpStatus.OK);
@@ -57,17 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<ProductResponse> getProductByIdForUser(Long id, String username, String token) {
-        String tokenUsername = jwtTokenService.extractUsername(token);
-
-        if (!username.equals(tokenUsername)) {
-            throw new ForbiddenException("You are not allowed to access this user's products");
-        }
-
-        if (tokenBlacklistService.isTokenRevoked(token)) {
-            throw new ForbiddenException("Token has been revoked");
-        }
-
-        User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
+        validateUserAndToken(username, token);
 
         Product product = productRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Product not found"));
 
@@ -75,39 +78,27 @@ public class ProductServiceImpl implements ProductService {
             throw new ForbiddenException("You are not allowed to access this product");
         }
 
-        ProductResponse productResponse = new ProductResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice(), product.getStock(), new UserResponse(user.getUsername()));
+        ProductResponse productResponse = createProductResponse(product);
 
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ProductResponse> addProductForUser(Product product, String username, String token) {
-        if (tokenBlacklistService.isTokenRevoked(token)) {
-            throw new ForbiddenException("Token has been revoked");
-        }
-
-        if (!username.equals(jwtTokenService.extractUsername(token))) {
-            throw new ForbiddenException("You are not allowed to add products for this user");
-        }
+        validateUserAndToken(username, token);
 
         User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
         product.setUser(user);
 
         Product savedProduct = productRepository.save(product);
-        ProductResponse productResponse = new ProductResponse(savedProduct.getId(), savedProduct.getName(), savedProduct.getDescription(), savedProduct.getPrice(), savedProduct.getStock(), new UserResponse(user.getUsername()));
+        ProductResponse productResponse = createProductResponse(savedProduct);
 
         return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<ProductResponse> updateProductForUser(Long id, Product product, String username, String token) {
-        String tokenUsername = jwtTokenService.extractUsername(token);
-
-        if (!username.equals(tokenUsername)) {
-            throw new ForbiddenException("You are not allowed to update this user's products");
-        }
-
-        User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
+        validateUserAndToken(username, token);
 
         Product existingProduct = productRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Product not found"));
 
@@ -121,14 +112,14 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setStock(product.getStock());
 
         Product updatedProduct = productRepository.save(existingProduct);
-        ProductResponse productResponse = new ProductResponse(updatedProduct.getId(), updatedProduct.getName(), updatedProduct.getDescription(), updatedProduct.getPrice(), updatedProduct.getStock(), new UserResponse(user.getUsername()));
+        ProductResponse productResponse = createProductResponse(updatedProduct);
 
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> deleteProductForUser(Long id, String username, String token) {
-        User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException("User not found"));
+        validateUserAndToken(username, token);
 
         Product product = productRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Product not found"));
 
