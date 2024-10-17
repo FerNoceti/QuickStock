@@ -8,22 +8,22 @@ function Footer() {
             <div className="footer-container">
                 <ul className="footer-list">
                     <li className="footer-item">
-                        <NavLink exact to="/" activeClassName="active-link" className="footer-link">
+                        <NavLink to="/" className={({ isActive }) => `footer-link ${isActive ? 'active-link' : ''}`}>
                             Home
                         </NavLink>
                     </li>
                     <li className="footer-item">
-                        <NavLink to="/products" activeClassName="active-link" className="footer-link">
+                        <NavLink to="/products" className={({ isActive }) => `footer-link ${isActive ? 'active-link' : ''}`}>
                             Products
                         </NavLink>
                     </li>
                     <li className="footer-item">
-                        <NavLink to="/about" activeClassName="active-link" className="footer-link">
+                        <NavLink to="/about" className={({ isActive }) => `footer-link ${isActive ? 'active-link' : ''}`}>
                             About Us
                         </NavLink>
                     </li>
                     <li className="footer-item">
-                        <NavLink to="/contact" activeClassName="active-link" className="footer-link">
+                        <NavLink to="/contact" className={({ isActive }) => `footer-link ${isActive ? 'active-link' : ''}`}>
                             Contact
                         </NavLink>
                     </li>
