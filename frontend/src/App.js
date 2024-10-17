@@ -5,20 +5,24 @@ import HomePage from "./pages/HomePage";
 import Footer from "./components/Footer";
 import ProductPage from "./pages/ProductPage";
 import LoginSignUpPage from "./pages/LoginSignUpPage";
+import { AuthProvider } from "./context/AuthContext";
 import "./styles/App.css";
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginSignUpPage />} />
-          <Route path="/products" element={<ProductPage />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginSignUpPage wantLogin={true} />} />
+            <Route path="/register" element={<LoginSignUpPage wantLogin={false} />} />
+            <Route path="/products" element={<ProductPage />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }

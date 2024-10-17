@@ -17,14 +17,20 @@ function NavBar() {
       <ul className="nav-list">
         {location.pathname !== "/" && (
           <li className="nav-item">
-            <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <NavLink 
+              to="/" 
+              className={({ isActive }) => `nav-link ${isActive ? 'hidden' : ''}`}
+            >
               Home
             </NavLink>
           </li>
         )}
         {location.pathname !== "/products" && (
           <li className="nav-item">
-            <NavLink to="/products" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <NavLink 
+              to="/products" 
+              className={({ isActive }) => `nav-link ${isActive ? 'hidden' : ''}`}
+            >
               Products
             </NavLink>
           </li>
@@ -39,7 +45,10 @@ function NavBar() {
             </div>
           ) : (
             location.pathname !== "/login" && (
-              <NavLink to="/login" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+              <NavLink 
+                to="/login" 
+                className={({ isActive }) => `nav-link ${isActive ? 'hidden' : ''}`}
+              >
                 Login
               </NavLink>
             )
@@ -51,3 +60,4 @@ function NavBar() {
 }
 
 export default NavBar;
+
