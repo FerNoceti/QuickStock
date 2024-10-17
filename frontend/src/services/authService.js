@@ -16,7 +16,7 @@ export const login = async (user) => {
 
 export const signUp = async (newUser) => {
     try {
-      const response = await axios.post(`${API_URL}signup`, newUser);
+      const response = await axios.post(`${API_URL}register`, newUser);
       return response;
     } catch (error) {
       return error.response;

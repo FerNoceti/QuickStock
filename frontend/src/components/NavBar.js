@@ -16,6 +16,11 @@ function NavBar() {
             Products
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink to="/login" activeClassName="active-link" className="nav-link">
+            Login
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
