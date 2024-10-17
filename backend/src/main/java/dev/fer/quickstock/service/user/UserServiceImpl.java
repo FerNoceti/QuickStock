@@ -1,5 +1,6 @@
 package dev.fer.quickstock.service.user;
 
+import dev.fer.quickstock.dto.user.LoginResponse;
 import dev.fer.quickstock.dto.user.User;
 import dev.fer.quickstock.dto.user.UserLogin;
 import dev.fer.quickstock.dto.user.UserResponse;
@@ -37,20 +38,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> loginUser(UserLogin userLogin) {
+    public ResponseEntity<LoginResponse> loginUser(UserLogin userLogin) {
         User user = userRepository.findById(userLogin.getUsername()).orElse(null);
 
         if (user == null) {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         if (!bCryptPasswordEncoder.matches(userLogin.getPassword(), user.getPassword())) {
-            return new ResponseEntity<>("Incorrect password", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         String token = jwtTokenService.generateToken(user.getUsername());
-        return new ResponseEntity<>(token, HttpStatus.OK);
+
+        LoginResponse loginResponse = new LoginResponse(token, user.getUsername(), user.getEmail());
+
+        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
+
 
     @Override
     public ResponseEntity<Void> logoutUser(String username, String token) {

@@ -1,5 +1,6 @@
 package dev.fer.quickstock.controller;
 
+import dev.fer.quickstock.dto.user.LoginResponse;
 import dev.fer.quickstock.dto.user.User;
 import dev.fer.quickstock.dto.user.UserLogin;
 import dev.fer.quickstock.dto.user.UserResponse;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@Valid @RequestBody UserLogin userLogin) {
+    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody UserLogin userLogin) {
         return userService.loginUser(userLogin);
     }
 
