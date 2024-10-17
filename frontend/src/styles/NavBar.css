@@ -1,34 +1,36 @@
+/* NavBar.css */
+
 .navbar {
-    background-color: #333;
-    padding: 1rem;
-  }
-  
-  .nav-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  .nav-item {
-    flex: 1;
-  }
-  
-  .nav-link {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
-    transition: background-color 0.3s;
-  }
-  
-  .nav-link:hover {
-    background-color: #555;
-  }
-  
-  .active-link {
-    font-weight: bold;
-    background-color: #444;
-  }
-  
+  background-color: #333;
+  padding: 1rem;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-item {
+  margin: 0;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}

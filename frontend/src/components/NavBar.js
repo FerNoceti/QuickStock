@@ -25,7 +25,7 @@ function NavBar() {
             </NavLink>
           </li>
         )}
-        {location.pathname !== "/products" && (
+        {user && location.pathname !== "/products" && (
           <li className="nav-item">
             <NavLink 
               to="/products" 
@@ -60,4 +60,3 @@ function NavBar() {
 }
 
 export default NavBar;
-
