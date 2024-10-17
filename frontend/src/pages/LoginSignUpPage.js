@@ -24,7 +24,7 @@ const LoginSignUpPage = () => {
             const response = await login(user);
             if (response.status === 200) {
                 setErrorMessage("");
-                window.location = "/products";
+                window.location = "/";
             } else {
                 setErrorMessage(response.data.message);
             }
@@ -46,7 +46,7 @@ const LoginSignUpPage = () => {
             const response = await signUp(newUser);
             if (response.status === 201) {
                 setErrorMessage("");
-                window.location = "/products";
+                window.location = "/";
             } else {
                 setErrorMessage(response.data.message);
             }
