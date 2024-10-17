@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
                 product.getDescription(),
                 product.getPrice(),
                 product.getStock(),
-                new UserResponse(product.getUser().getUsername())
+                new UserResponse(product.getUser().getUsername(), product.getUser().getEmail())
         );
     }
 

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<UserResponse> saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        UserResponse userResponse = new UserResponse(user.getUsername());
+        UserResponse userResponse = new UserResponse(user.getUsername(), user.getEmail());
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 

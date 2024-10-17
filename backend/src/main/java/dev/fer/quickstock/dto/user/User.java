@@ -13,12 +13,16 @@ public class User {
     // Attributes
     @Id
     @NotNull(message = "Username cannot be null")
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @NotNull(message = "Password cannot be null")
     @Column(name = "password", nullable = false)
     private String password;
+
+    @NotNull(message = "Email cannot be null")
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
@@ -47,6 +51,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Product> getProducts() {
