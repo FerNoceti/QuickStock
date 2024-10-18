@@ -4,6 +4,7 @@ import LoginForm from "../components/LoginForm";
 import SignUpForm from "../components/SignUpForm";
 import { login, signUp } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
+import "../styles/LoginSignUpPage.css";
 
 const LoginSignUpPage = ({ wantLogin }) => {
   const navigate = useNavigate();
