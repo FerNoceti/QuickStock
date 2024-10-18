@@ -1,16 +1,12 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import LogoutButton from "./LogoutButton";
 import "../styles/NavBar.css";
 
 function NavBar() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
-
-  const handleLogout = () => {
-    logout();
-    window.location = "/"; // Redirige después de cerrar sesión
-  };
 
   return (
     <nav aria-label="Main Navigation" className="navbar">
@@ -39,9 +35,7 @@ function NavBar() {
           {user ? (
             <div className="nav-link">
               Hola, {user.username}!
-              <button onClick={handleLogout} className="logout-button">
-                Logout
-              </button>
+              <LogoutButton />
             </div>
           ) : (
             location.pathname !== "/login" && (
