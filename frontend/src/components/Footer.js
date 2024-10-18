@@ -17,7 +17,7 @@ function Footer() {
                 to="/"
                 className={({ isActive }) => `footer-link ${isActive ? 'hidden' : ''}`}
               >
-                Home
+                Inicio
               </NavLink>
             </li>
           )}
@@ -27,7 +27,7 @@ function Footer() {
                 to="/products"
                 className={({ isActive }) => `footer-link ${isActive ? 'hidden' : ''}`}
               >
-                Products
+                Productos
               </NavLink>
             </li>
           )}
@@ -36,7 +36,7 @@ function Footer() {
               to="/about"
               className={({ isActive }) => `footer-link ${isActive ? 'hidden' : ''}`}
             >
-              About Us
+              Sobre nosotros
             </NavLink>
           </li>
           <li className="footer-item">
@@ -44,7 +44,7 @@ function Footer() {
               to="/contact"
               className={({ isActive }) => `footer-link ${isActive ? 'hidden' : ''}`}
             >
-              Contact
+              Contacto
             </NavLink>
           </li>
         </ul>

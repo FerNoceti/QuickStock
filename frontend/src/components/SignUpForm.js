@@ -7,7 +7,7 @@ const SignUpForm = ({ username, email, password, confirmPassword, handleUsername
             <h1 className="auth-form-header">Registro de usuario</h1>
             <form onSubmit={handleSubmit}>
                 <div className="auth-form-group">
-                    <label htmlFor="username" className="auth-form-label">Username:</label>
+                    <label htmlFor="username" className="auth-form-label">Usuario:</label>
                     <input
                         type="text"
                         id="username"
@@ -29,7 +29,7 @@ const SignUpForm = ({ username, email, password, confirmPassword, handleUsername
                     />
                 </div>
                 <div className="auth-form-group">
-                    <label htmlFor="password" className="auth-form-label">Password:</label>
+                    <label htmlFor="password" className="auth-form-label">Constraseña:</label>
                     <input
                         type="password"
                         id="password"
@@ -40,7 +40,7 @@ const SignUpForm = ({ username, email, password, confirmPassword, handleUsername
                     />
                 </div>
                 <div className="auth-form-group">
-                    <label htmlFor="confirmPassword" className="auth-form-label">Confirm Password:</label>
+                    <label htmlFor="confirmPassword" className="auth-form-label">Confirmar constraseña:</label>
                     <input
                         type="password"
                         id="confirmPassword"
@@ -50,7 +50,7 @@ const SignUpForm = ({ username, email, password, confirmPassword, handleUsername
                         className="auth-form-input"
                     />
                 </div>
-                <button type="submit" className="auth-form-button">Sign Up</button>
+                <button type="submit" className="auth-form-button">Registrarse</button>
                 {errorMessage && <p className="auth-form-error-message">{errorMessage}</p>}
             </form>
         </div>

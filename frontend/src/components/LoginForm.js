@@ -7,7 +7,7 @@ const LoginForm = ({ username, password, handleUsernameChange, handlePasswordCha
             <h1 className="auth-form-header">Inicio de sesión</h1>
             <form onSubmit={handleSubmit}>
                 <div className="auth-form-group">
-                    <label htmlFor="username" className="auth-form-label">Username:</label>
+                    <label htmlFor="username" className="auth-form-label">Usuario:</label>
                     <input
                         type="text"
                         id="username"
@@ -18,7 +18,7 @@ const LoginForm = ({ username, password, handleUsernameChange, handlePasswordCha
                     />
                 </div>
                 <div className="auth-form-group">
-                    <label htmlFor="password" className="auth-form-label">Password:</label>
+                    <label htmlFor="password" className="auth-form-label">Constraseña:</label>
                     <input
                         type="password"
                         id="password"
@@ -28,7 +28,7 @@ const LoginForm = ({ username, password, handleUsernameChange, handlePasswordCha
                         className="auth-form-input"
                     />
                 </div>
-                <button type="submit" className="auth-form-button">Login</button>
+                <button type="submit" className="auth-form-button">Iniciar sesión</button>
                 {errorMessage && <p className="auth-form-error-message">{errorMessage}</p>}
             </form>
         </div>

@@ -30,15 +30,6 @@
     transition: color 0.3s; /* Transición suave para el color */
 }
 
-.footer-link:hover {
-    color: #f0c040; /* Color de los enlaces al pasar el mouse */
-}
-
-.active-link {
-    font-weight: bold; /* Destaca el enlace activo */
-    border-bottom: 2px solid #f0c040; /* Línea debajo del enlace activo */
-}
-
 .footer-text {
     margin-top: 1rem; /* Espaciado superior */
     font-size: 0.875rem; /* Tamaño de fuente más pequeño */

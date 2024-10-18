@@ -17,7 +17,7 @@ function NavBar() {
               to="/" 
               className={({ isActive }) => `nav-link ${isActive ? 'hidden' : ''}`}
             >
-              Home
+              Inicio
             </NavLink>
           </li>
         )}
@@ -27,7 +27,7 @@ function NavBar() {
               to="/products" 
               className={({ isActive }) => `nav-link ${isActive ? 'hidden' : ''}`}
             >
-              Products
+              Productos
             </NavLink>
           </li>
         )}
@@ -35,7 +35,7 @@ function NavBar() {
           {user ? (
             <div className="nav-link">
               Hola, {user.username}!
-              <LogoutButton />
+              <LogoutButton className="nav-button"/>
             </div>
           ) : (
             location.pathname !== "/login" && (
@@ -43,7 +43,7 @@ function NavBar() {
                 to="/login" 
                 className={({ isActive }) => `nav-link ${isActive ? 'hidden' : ''}`}
               >
-                Login
+                Iniciar sesión
               </NavLink>
             )
           )}

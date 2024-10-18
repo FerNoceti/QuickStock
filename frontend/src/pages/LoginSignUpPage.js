@@ -70,7 +70,7 @@ const LoginSignUpPage = ({ wantLogin }) => {
   };
 
   if (user) {
-    return <div>Welcome, {user.username}!</div>;
+    return <div>Bienvenido, {user.username}!</div>;
   }
 
   return (
