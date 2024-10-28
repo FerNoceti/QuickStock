@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { addProduct, updateProduct } from "../services/productService";
 import "../styles/ProductForm.css";
 
-const ProductForm = ({ productToEdit, onSubmit }) => {
+const ProductForm = ({ onSubmit, productToEdit }) => {
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -10,78 +9,53 @@ const ProductForm = ({ productToEdit, onSubmit }) => {
     stock: "",
   });
 
-  const [errors, setErrors] = useState({}); // Para almacenar los errores
+  const [errors, setErrors] = useState({});
 
+  // Si se pasa un producto para editar, se actualiza el estado del formulario
   useEffect(() => {
     if (productToEdit) {
-      setProduct(productToEdit); // Precargar el producto en modo edición
+      setProduct(productToEdit);
     } else {
-      setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario si no hay producto
+      handleClear();
     }
   }, [productToEdit]);
 
+  // Manejar el cambio en los inputs y actualizar el estado
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProduct({ ...product, [name]: value });
+    setProduct((prevProduct) => ({ ...prevProduct, [name]: value }));
   };
 
-  // Función para validar los campos del formulario
-  const validateForm = () => {
-    let formErrors = {};
-  
-    // Validar el nombre del producto (alfabético y no vacío)
-    if (!product.name.trim()) {
-      formErrors.name = "El nombre es obligatorio.";
-    } else if (!/^[a-zA-Z\s]+$/.test(product.name.trim())) {
-      formErrors.name = "El nombre solo debe contener letras.";
-    }
-  
-    // Validar el precio (número positivo)
-    const price = parseFloat(product.price);
-    if (!price || isNaN(price) || price <= 0) {
-      formErrors.price = "El precio debe ser un número positivo.";
-    } else if (!/^\d+(\.\d{1,2})?$/.test(product.price)) {
-      formErrors.price = "El precio debe tener como máximo dos decimales.";
-    }
-  
-    // Validar el stock (número no negativo)
-    const stock = parseInt(product.stock, 10);
-    if (isNaN(stock)) {
-      formErrors.stock = "El stock debe ser un número.";
-    } else if (stock < 0) {
-      formErrors.stock = "El stock debe ser cero o un número positivo.";
-    }
-  
-    setErrors(formErrors);
-    return Object.keys(formErrors).length === 0; // Devuelve true si no hay errores
+  // Validar los campos requeridos
+  const validate = () => {
+    const newErrors = {};
+    if (!product.name) newErrors.name = "El nombre es requerido";
+    if (!product.price) newErrors.price = "El precio es requerido";
+    if (!product.stock) newErrors.stock = "El stock es requerido";
+    return newErrors;
   };
-  
 
+  // Manejar el envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      if (productToEdit) {
-        updateProduct(product.id, product)
-          .then(() => {
-            onSubmit();
-            setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario
-          })
-          .catch((err) => console.log(err));
-      } else {
-        addProduct(product)
-          .then(() => {
-            onSubmit();
-            setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario
-          })
-          .catch((err) => console.log(err));
-      }
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length === 0) {
+      onSubmit(product);
+      handleClear();
+    } else {
+      setErrors(validationErrors);
     }
   };
 
+  // Limpiar el formulario
   const handleClear = () => {
-    setProduct({ name: "", description: "", price: "", stock: "" }); // Limpiar el formulario manualmente
-    setErrors({}); // Limpiar los errores
-    onSubmit(); // Salir del modo edición
+    setProduct({
+      name: "",
+      description: "",
+      price: "",
+      stock: "",
+    });
+    setErrors({});
   };
 
   return (

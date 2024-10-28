@@ -1,36 +1,57 @@
 import React, { useState, useEffect } from "react";
-import ProductForm from "../components/ProductForm";
 import ProductList from "../components/ProductList";
-import { getProducts, deleteProduct } from "../services/productService";
-import "../styles/ProductPage.css";
+import ProductForm from "../components/ProductForm";
+import { useProductService } from "../services/productService";
 
 const ProductPage = () => {
+  const { getProducts, createProduct, updateProduct, deleteProduct } = useProductService();
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  // Cargar productos al montar el componente
   useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const productsData = await getProducts();
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      }
+    };
     loadProducts();
   }, []);
 
-  const loadProducts = () => {
-    getProducts()
-      .then((res) => setProducts(res))
-      .catch((err) => console.log(err));
-  };
-
+  // Manejar la edición del producto, colocando el producto en el formulario
   const handleProductEdit = (product) => {
     setSelectedProduct(product);
   };
 
-  const handleFormSubmit = () => {
-    loadProducts();
-    setSelectedProduct(null); // Limpiar el formulario después de crear/editar
+  // Manejar el envío del formulario (creación o actualización de un producto)
+  const handleFormSubmit = async (product) => {
+    try {
+      if (selectedProduct) {
+        // Actualizar producto existente
+        const updatedProduct = await updateProduct(selectedProduct.id, product);
+        setProducts(products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
+      } else {
+        // Crear un nuevo producto
+        const newProduct = await createProduct(product);
+        setProducts([...products, newProduct]);
+      }
+      setSelectedProduct(null); // Limpiar el formulario
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
-  const handleProductDelete = (id) => {
-    deleteProduct(id)
-      .then(() => loadProducts())
-      .catch((err) => console.log(err));
+  // Manejar la eliminación de un producto
+  const handleProductDelete = async (productId) => {
+    try {
+      await deleteProduct(productId);
+      setProducts(products.filter((p) => p.id !== productId));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   return (

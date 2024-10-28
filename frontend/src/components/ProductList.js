@@ -7,21 +7,25 @@ const ProductList = ({ products, onEdit, onDelete }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
+  // Manejar la solicitud de eliminación con confirmación
   const handleDelete = (product) => {
-    setProductToDelete(product); // Guardar el producto a eliminar
-    setShowConfirmation(true); // Mostrar el modal de confirmación
+    setProductToDelete(product);
+    setShowConfirmation(true);
   };
 
+  // Confirmar la eliminación del producto
   const confirmDelete = () => {
     if (productToDelete) {
-      onDelete(productToDelete.id); // Llamar a la función onDelete pasada por props usando el ID del producto
-      setShowConfirmation(false); // Ocultar el modal después de confirmar
+      onDelete(productToDelete.id);
     }
+    setShowConfirmation(false);
+    setProductToDelete(null);
   };
 
+  // Cancelar la eliminación del producto
   const cancelDelete = () => {
-    setProductToDelete(null); // Limpiar el producto seleccionado
-    setShowConfirmation(false); // Ocultar el modal
+    setShowConfirmation(false);
+    setProductToDelete(null);
   };
 
   return (
@@ -48,7 +52,6 @@ const ProductList = ({ products, onEdit, onDelete }) => {
         ))}
       </ul>
 
-      {/* Mostrar el modal de confirmación solo si showConfirmation es true */}
       {showConfirmation && productToDelete && (
         <Confirmation
           message={`¿Estás seguro de que deseas eliminar ${productToDelete.name}?`}
