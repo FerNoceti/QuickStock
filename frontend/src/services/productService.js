@@ -1,53 +1,92 @@
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Obtener todos los productos del usuario
-export const getProducts = (username, token) => {
-  return axios
-    .get(`${API_URL}/product/${username}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => res.data)
-    .catch((err) => console.error(err));
-};
+// Hook personalizado para manejar las llamadas de productos usando el token del contexto
+export function useProductService() {
+  const { user, token } = useAuth();
 
-// Obtener un producto por ID
-export const getProductById = (id, username, token) => {
-  return axios
-    .get(`${API_URL}/product/${username}/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => res.data)
-    .catch((err) => console.error(err));
-};
+  // Obtener todos los productos del usuario
+  const getProducts = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/product/${user.username}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
+  };
 
-// Crear un nuevo producto
-export const createProduct = (product, token) => {
-  return axios
-    .post(`${API_URL}/product`, product, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => res.data)
-    .catch((err) => console.error(err));
-};
+  // Obtener un producto por ID
+  const getProductById = async (id) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/product/${user.username}/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching product by ID:", error);
+      throw error;
+    }
+  };
 
-// Actualizar un producto
-export const updateProduct = (id, product, username, token) => {
-  return axios
-    .put(`${API_URL}/product/${username}/${id}`, product, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => res.data)
-    .catch((err) => console.error(err));
-};
+  // Crear un nuevo producto
+  const createProduct = async (product) => {
+    try {
+      const response = await axios.post(`${API_URL}/product`, product, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error creating product:", error);
+      throw error;
+    }
+  };
 
-// Eliminar un producto
-export const deleteProduct = (id, username, token) => {
-  return axios
-    .delete(`${API_URL}/product/${username}/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => res.data)
-    .catch((err) => console.error(err));
-};
+  // Actualizar un producto
+  const updateProduct = async (id, product) => {
+    try {
+      const response = await axios.put(
+        `${API_URL}/product/${user.username}/${id}`,
+        product,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
+  };
+
+  // Eliminar un producto
+  const deleteProduct = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${API_URL}/product/${user.username}/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      throw error;
+    }
+  };
+
+  return {
+    getProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+  };
+}
