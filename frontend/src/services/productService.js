@@ -2,42 +2,52 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export const getProducts = () => {
+// Obtener todos los productos del usuario
+export const getProducts = (username, token) => {
   return axios
-    .get(`${API_URL}products`)
+    .get(`${API_URL}/product/${username}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then((res) => res.data)
-    .catch((err) => {
-      console.log("Error: ", err);
-      throw err;
-    });
+    .catch((err) => console.error(err));
 };
 
-export const addProduct = (product) => {
+// Obtener un producto por ID
+export const getProductById = (id, username, token) => {
   return axios
-    .post(`${API_URL}product`, product)
+    .get(`${API_URL}/product/${username}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then((res) => res.data)
-    .catch((err) => {
-      console.log("Error: ", err);
-      throw err;
-    });
+    .catch((err) => console.error(err));
 };
 
-export const updateProduct = (id, product) => {
+// Crear un nuevo producto
+export const createProduct = (product, token) => {
   return axios
-    .put(`${API_URL}product/${id}`, product)
+    .post(`${API_URL}/product`, product, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then((res) => res.data)
-    .catch((err) => {
-      console.log("Error en el PUT: ", err);
-      throw err;
-    });
+    .catch((err) => console.error(err));
 };
 
-export const deleteProduct = (id) => {
+// Actualizar un producto
+export const updateProduct = (id, product, username, token) => {
   return axios
-    .delete(`${API_URL}product/${id}`)
+    .put(`${API_URL}/product/${username}/${id}`, product, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then((res) => res.data)
-    .catch((err) => {
-      console.log("Error en el DELETE: ", err);
-      throw err;
-    });
+    .catch((err) => console.error(err));
+};
+
+// Eliminar un producto
+export const deleteProduct = (id, username, token) => {
+  return axios
+    .delete(`${API_URL}/product/${username}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => res.data)
+    .catch((err) => console.error(err));
 };
