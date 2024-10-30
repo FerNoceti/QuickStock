@@ -28,15 +28,17 @@ public class ProductController {
         return authorizationHeader.substring(7);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<List<ProductResponse>> getProductsForUser(@PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getProductsForUser(@RequestHeader("Authorization") String authorizationHeader) {
         String token = extractTokenFromHeader(authorizationHeader);
+        String username = jwtTokenService.extractUsername(token);
         return productService.getAllProductsByUser(username, token);
     }
 
-    @GetMapping("/{username}/{id}")
-    public ResponseEntity<ProductResponse> getProductByIdForUser(@PathVariable("id") Long id, @PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getProductByIdForUser(@PathVariable("id") Long id, @RequestHeader("Authorization") String authorizationHeader) {
         String token = extractTokenFromHeader(authorizationHeader);
+        String username = jwtTokenService.extractUsername(token);
         return productService.getProductByIdForUser(id, username, token);
     }
 
@@ -47,15 +49,17 @@ public class ProductController {
         return productService.addProductForUser(product, username, token);
     }
 
-    @PutMapping("/{username}/{id}")
-    public ResponseEntity<ProductResponse> updateProductForUser(@PathVariable("id") Long id, @Valid @RequestBody Product product, @PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> updateProductForUser(@PathVariable("id") Long id, @Valid @RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
         String token = extractTokenFromHeader(authorizationHeader);
+        String username = jwtTokenService.extractUsername(token);
         return productService.updateProductForUser(id, product, username, token);
     }
 
-    @DeleteMapping("/{username}/{id}")
-    public ResponseEntity<Void> deleteProductForUser(@PathVariable("id") Long id, @PathVariable("username") String username, @RequestHeader("Authorization") String authorizationHeader) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductForUser(@PathVariable("id") Long id, @RequestHeader("Authorization") String authorizationHeader) {
         String token = extractTokenFromHeader(authorizationHeader);
+        String username = jwtTokenService.extractUsername(token);
         return productService.deleteProductForUser(id, username, token);
     }
 }
