@@ -31,11 +31,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<UserResponse> saveUser(User user) {
+        if (userRepository.findById(user.getUsername()).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         UserResponse userResponse = new UserResponse(user.getUsername(), user.getEmail());
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
+
 
     @Override
     public ResponseEntity<LoginResponse> loginUser(UserLogin userLogin) {
