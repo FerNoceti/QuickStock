@@ -1,5 +1,6 @@
 package dev.fer.quickstock.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,21 @@ public class JwtTokenService {
     }
 
     public String extractUsername(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        try {
+            return Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        } catch (ExpiredJwtException e) {
+            System.out.println("Token expirado.");
+            return null;
+        } catch (Exception e) {
+            System.out.println("Token inválido.");
+            return null;
+        }
     }
+
 
     public boolean validateToken(String token, String username) {
         String extractedUsername = extractUsername(token);
